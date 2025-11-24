@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="allSectionsstyle.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+    
+
+    <body>
+        <div class=" container">
+            <h1>login</h1>
+            <form id='form'>
+                <label>email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <label>password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                
+
+                <label for='role'>role</label>
+                <select id="role" required>
+                    <option value="">Select role</option>
+                    <option value="Student">Student</option>
+                    <option value="Faculty">Faculty</option>
+                    <option value="Faculty Intern">Faculty Intern</option>
+
+                </select>
+                <button type="submit">Submit</button>
+            </form> 
+        </div>
+
+        <!-- 👇👇👇 MOVE THE SCRIPT BLOCK HERE 👇👇👇 -->
+        <script>
+            const form = document.getElementById('form');
+            // Define submitBtn and originalBtnText here so they are accessible everywhere
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("password").value.trim();
+                const role = document.getElementById("role").value;
+
+                if (!email) {
+                    swal('Missing Email', 'Please enter your Email','error'); return;
+                } else if (!validateEmail(email)){
+                    swal('Invalid Email','enter your email in the right format', 'error'); return;
+                } else if(!password) {
+                    swal('Missing password','enter your password', 'Error!'); return;
+                } else if(password.length < 6){
+                    swal('The password must have 6 charachters','use 6 charachters for password','error'); return;
+                } else if(!role) {
+                    swal('Missing role','select a role','error');
+                    return;
+                }
+
+                try {
+                    // Set button state before the fetch call
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = 'logging in...';
+                    submitBtn.style.cursor = 'wait';
+
+                    const response = await fetch('login.php', {
+                        method: 'POST', // Use POST
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            email: email,
+                            password: password,
+                            role: role
+                        })
+                    });
+                    
+                    // Check for general HTTP errors first (e.g., 404 Not Found, 500 Server Error)
+                    if (!response.ok) {
+                        throw new Error('Server error: ' + response.statusText);
+                    }
+
+                    const data = await response.json();
+
+                    // Reset button state regardless of success/failure (before the catch block handles error popups)
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.style.cursor = 'pointer';
+
+
+                    if (data.state) {
+                        // Success handling: redirect based on role
+                        swal('Login successful', 'redirecting to dashboard','success')
+                           .then(() => {
+                                if (data.user.role === 'Student'){
+                                   window.location.href = 'StudentDash.html';
+                               } else if(data.user.role === 'Faculty'){
+                                  window.location.href = 'FacultyDash.html';
+                               } else if(data.user.role === 'Faculty Intern'){
+                                  window.location.href = 'FIDash.html';
+                               }
+                            
+                            });
+
+                    } else {
+                        // If PHP returns state: false, throw an error to trigger the catch block
+                        throw new Error(data.message || 'Login failed. Try again.');
+                    }
+
+                } catch (error) {
+                    // This block handles network errors AND PHP logic errors (where state is false)
+                    
+                    // Ensure button state is reset even if an error occurs
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.style.cursor = 'pointer';
+
+                    // Check if the specific signup link message is present
+                    if (error.message.includes('Would you like to sign up')) {
+                         swal({
+                            title: 'User Not Found',
+                            text: error.message, 
+                            icon: 'warning',
+                            buttons: {
+                               cancel: 'Try Again',
+                               signup: {
+                                  text: 'Sign Up',
+                                  value: 'signup'
+                               }
+                           }
+                          }).then((value) => {
+                             if (value === 'signup') {
+                                window.location.href = 'signup.html';
+                              }
+                          });
+                    } else {
+                        swal('Error!', error.message || 'An error occurred during login', 'error');
+                    }
+                }
+            });
+
+            function validateEmail(email) {
+                const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                 return pattern.test(email);
+            }
+        </script>
+        <!-- 👆👆👆 SCRIPT ENDS HERE 👆👆👆 -->
+
+</body>
+</html>
+
+
+     
+
+  

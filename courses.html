@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managecourses</title>
+    <link rel="stylesheet" href="allSectionsstyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Faculty</h2>
+            <a href ='FacultyDash.html'>Dashboard</a>
+            <a href="Sessions.html">Sessions</a>
+            <a href="Report.html">Reports</a>
+            <a href="#">Logout</a>
+
+        </div>
+        <div class="main-content">
+            <h2>course management</h2>
+
+            <section>
+                <h3>Coursea</h3>
+                    <table border="1" width="100%" cellpadding="8">
+                        <tr>
+                            <th>Course code</th>
+                            <th>Course title</th>
+                            <th>Actions</th>
+                        </tr>
+                        <tr>
+                            <td>CS101</td>
+                            <td>Web Tech</td>
+                            <td>Edit</td>
+                        </tr>
+
+                        <tr>
+                            <td>CS202</td>
+                            <td> Data Structures</td>
+                            <td>edit</td>
+                            
+                        </tr>
+                    </table>
+               
+            </section>
+
+            <section style="margin-top:10px;">
+                <h3>add new course</h3>
+                <form>
+                    <input type="text" placeholder="course code"required>
+                    <input type="text" placeholder="course title" required>
+                    <button type="submit"> add course</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

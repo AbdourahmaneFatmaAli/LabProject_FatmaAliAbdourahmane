@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="allSectionsstyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+        <div class=" container">
+            <h1>Sign up</h1>
+            <form id="form" action="#">
+                <label>First Name</label>
+                <input type="text" id="first_name" placeholder="Enter your first name" required>
+                <label>Last Name</label>
+                <input type="text" id="last_name" placeholder="Enter your last name" required>
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <label>Password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+
+                <label for="role">Role</label>
+                <select id='role' required>
+                    <option value="">Select Role</option>
+                    <option value="student">Student</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="faculty intern">Faculty Intern</option>
+
+                </select>
+                <label for="dob">Date of birth (Optional)</label>
+                <input type="date" id="dob">
+
+                <button type="submit">Sign Up</button>
+            </form>
+
+        </div>
+        
+
+        <script>
+            const form = document.getElementById('form');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const firstName = document.getElementById('first_name').value.trim();
+                const lastName = document.getElementById('last_name').value.trim();
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("password").value.trim();
+                const role = document.getElementById('role').value;
+                const dob = document.getElementById('dob').value || null;
+            
+
+                if (!firstName || !lastName) {
+                    swal.fire('Error', 'Please both first and last name','error');  
+                    return; 
+                } else if (!validateName(firstName) || !validateName(lastName)){
+                    swal.fire('Error','enter your Name in the right format', 'error'); 
+                    return;
+                } else if (!email) {
+                    swal.fire('Error', 'Please enter your Email','error');  
+                    return; 
+                } else if (!validateEmail(email)){
+                    swal.fire('Error','enter your email in the right format', 'error');
+                    return;
+                }else if(password.length < 6){
+                    swal.fire('Error','use 6 charachters for password','error');
+                    return;
+                }else if (!role) {
+                    swal.fire('Error', 'please select a role', 'error');
+                    return;
+                }
+
+
+
+
+                   try{
+                       const submitBtn = form.querySelector('button[type="submit"]');
+                       const originalBtnText = submitBtn.innerHTML;
+                       submitBtn.disabled = true;
+                       submitBtn.innerHTML = 'Signing in...';
+
+                       const response = await fetch('signup.php', {
+                        method: 'POST',
+                        headers: {
+                            'content-Type': 'application/json'
+                        },
+
+                        body: JSON.stringify({
+                            first_name: firstName,
+                            last_name: lastName,
+                            email: email,
+                            password: password,
+                            role: role,
+                            dob: dob
+                        })
+                      });
+
+                      const contentType = response.headers.get('content-type');
+                      if (!contentType || !contentType.includes('application/json')) {
+                            const text = await response.text();
+                            throw new Error('Server returned non-JSON response: ' + text);
+                      }
+                      
+
+
+                        const data = await response.json();
+
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+
+
+                    if (data.state) {
+
+                        await Swal.fire({
+                            title: 'Success',
+                            text: 'Registration successful, redirecting to login...',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.href = 'login.html';
+                     } else {
+                        throw new Error(data.message || 'registraton failed');
+                     }
+
+                    } catch (error) {
+                        Swal.fire('Error', error.message || 'An error occured', 'error');
+
+                    }
+
+                    });
+
+            function validateName(name) {
+                const pattern = /^[A-Za-z\s'-]+$/;
+                 return pattern.test(name);
+
+            }
+
+            function validateEmail(email) {
+                const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                 return pattern.test(email);
+            
+            }
+
+        
+
+
+
+            
+        </script>
+    </body>
+</html>
