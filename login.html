@@ -33,10 +33,9 @@
             </form> 
         </div>
 
-        <!-- 👇👇👇 MOVE THE SCRIPT BLOCK HERE 👇👇👇 -->
         <script>
             const form = document.getElementById('form');
-            // Define submitBtn and originalBtnText here so they are accessible everywhere
+            
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
 
@@ -61,13 +60,12 @@
                 }
 
                 try {
-                    // Set button state before the fetch call
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = 'logging in...';
                     submitBtn.style.cursor = 'wait';
 
                     const response = await fetch('login.php', {
-                        method: 'POST', // Use POST
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -78,21 +76,20 @@
                         })
                     });
                     
-                    // Check for general HTTP errors first (e.g., 404 Not Found, 500 Server Error)
+                   
                     if (!response.ok) {
                         throw new Error('Server error: ' + response.statusText);
                     }
 
                     const data = await response.json();
 
-                    // Reset button state regardless of success/failure (before the catch block handles error popups)
-                    submitBtn.disabled = false;
+                    
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.style.cursor = 'pointer';
 
 
                     if (data.state) {
-                        // Success handling: redirect based on role
+                       
                         swal('Login successful', 'redirecting to dashboard','success')
                            .then(() => {
                                 if (data.user.role === 'Student'){
@@ -106,19 +103,17 @@
                             });
 
                     } else {
-                        // If PHP returns state: false, throw an error to trigger the catch block
+                        
                         throw new Error(data.message || 'Login failed. Try again.');
                     }
 
                 } catch (error) {
-                    // This block handles network errors AND PHP logic errors (where state is false)
                     
-                    // Ensure button state is reset even if an error occurs
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.style.cursor = 'pointer';
 
-                    // Check if the specific signup link message is present
+                  
                     if (error.message.includes('Would you like to sign up')) {
                          swal({
                             title: 'User Not Found',
@@ -147,7 +142,7 @@
                  return pattern.test(email);
             }
         </script>
-        <!-- 👆👆👆 SCRIPT ENDS HERE 👆👆👆 -->
+  
 
 </body>
 </html>
