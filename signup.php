@@ -15,7 +15,7 @@ if (empty($first_name) || empty($last_name) || empty($email) || empty($password)
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
     $response = ['state' => false, 'message' => 'invalid email format'];
-    echo json_encode($response); // This is line 36
+    echo json_encode($response); 
     exit();
 }
 $check_sql = 'SELECT user_id FROM users WHERE email = ?';

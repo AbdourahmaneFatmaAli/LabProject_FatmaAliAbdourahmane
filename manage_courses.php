@@ -212,7 +212,7 @@ $courses = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                     (${request.email || 'No email'})</p>
                     <p>Requested on: ${request.requested_at ? 
                         new Date(request.requested_at).toLocaleString() : 'N/A'}</p>
-                    <form method="POST" action="update_request.php" style="margin-top: 10px;">
+                    <form method="POST" action="update_requests.php" style="margin-top: 10px;">
                         <input type="hidden" name="course_id" value="${courseId}">
                         <input type="hidden" name="student_id" value="${request.student_id}">
                         <button type="submit" name="status" value="approved" 
