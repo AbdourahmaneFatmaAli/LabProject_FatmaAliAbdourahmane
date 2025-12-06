@@ -119,7 +119,7 @@ $courses = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             <a href ='FacultyDash.html'>Dashboard</a>
             <a href="Sessions.html">Sessions</a>
             <a href="Report.html">Reports</a>
-            <a href="logout.php">Logout</a>
+            <a href="login.html">Logout</a>
 
         </div>
         <div class="main-content">

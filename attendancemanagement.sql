@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 23, 2025 at 09:03 AM
+-- Host: localhost
+-- Generation Time: Dec 06, 2025 at 07:40 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,6 +36,13 @@ CREATE TABLE `attendance` (
   `remarks` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`attendance_id`, `session_id`, `student_id`, `status`, `check_in_time`, `remarks`) VALUES
+(1, 1, 2, 'present', '21:44:57', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +58,13 @@ CREATE TABLE `courses` (
   `faculty_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`course_id`, `course_code`, `course_name`, `description`, `credit_hours`, `faculty_id`) VALUES
+(1, 'Li201', 'WOC', NULL, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -59,8 +73,17 @@ CREATE TABLE `courses` (
 
 CREATE TABLE `course_student_list` (
   `course_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL
+  `student_id` int(11) NOT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `requested_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `course_student_list`
+--
+
+INSERT INTO `course_student_list` (`course_id`, `student_id`, `status`, `requested_at`) VALUES
+(1, 2, 'pending', '2025-12-06 00:42:39');
 
 -- --------------------------------------------------------
 
@@ -73,6 +96,13 @@ CREATE TABLE `faculty` (
   `is_intern` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `faculty`
+--
+
+INSERT INTO `faculty` (`faculty_id`, `is_intern`) VALUES
+(1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -82,12 +112,20 @@ CREATE TABLE `faculty` (
 CREATE TABLE `sessions` (
   `session_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
+  `session_code` varchar(10) DEFAULT NULL,
   `topic` varchar(150) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `date` date NOT NULL
 ) ;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`session_id`, `course_id`, `session_code`, `topic`, `location`, `start_time`, `end_time`, `date`) VALUES
+(1, 1, 'FF2F28', 'English For Beginners', 'Jackson Hall', '20:08:00', '21:08:00', '2025-12-12');
 
 -- --------------------------------------------------------
 
@@ -98,6 +136,13 @@ CREATE TABLE `sessions` (
 CREATE TABLE `students` (
   `student_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`student_id`) VALUES
+(2);
 
 -- --------------------------------------------------------
 
@@ -114,6 +159,14 @@ CREATE TABLE `users` (
   `role` enum('Student','Faculty','Faculty Intern') NOT NULL,
   `dob` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password_hash`, `role`, `dob`) VALUES
+(1, 'Fatou', 'Ali', 'fatma.abdourahmane@ashesi.edu.gh', '$2y$10$IzyehvrXh7u91VvqTy7J6uJWxlaAn/nE0fod5mijJkJadZr9IoIJe', 'Faculty', '2002-12-20'),
+(2, 'fatma', 'ali', 'fatmaaliabdourahmane@gmail.com', '$2y$10$TSbiQHI4LWHz2kD8//Hb3OJCthGnTbEXUH/6m/bezjWyHspZuabVa', 'Student', '2002-12-29');
 
 --
 -- Indexes for dumped tables
@@ -176,13 +229,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sessions`
@@ -194,7 +247,7 @@ ALTER TABLE `sessions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
