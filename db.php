@@ -1,15 +1,14 @@
 <?php
 $host = 'localhost';
-$user = 'fatma.abdourahmane';
-$pass = 'Fatou019@';
-$db = 'attendancemanagement';
+$dbname = 'webtech_2025A_fatma_abdourahmane';
+$username = 'fatma.abdourahmane';     
+$password = 'Fatou019@';     
 
-$con = new mysqli($host, $user, $pass, $db);
-
-if ($con->connect_error) {
-    die(json_encode(['state' => false, 'message' => 'Connection failed: ' . $con->connect_error]));
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Could not connect to the database $dbname: " . $e->getMessage());
 }
-
-$con->set_charset('utf8mb4');
 ?>
-

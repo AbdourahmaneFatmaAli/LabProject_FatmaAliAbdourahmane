@@ -18,11 +18,6 @@ $course_id = intval($_GET['course_id']);
 
 
 $check = $con->prepare("SELECT * FROM course_student_list WHERE student_id = ? AND course_id = ?");
-
-if (!$check) {
-    die("SQL Prepare failed: (" . $con->errno . ") " . $con->error);
-}
-
 $check->bind_param("ii", $student_id, $course_id);
 $check->execute();
 $enrolled = $check->get_result();
@@ -44,17 +39,6 @@ LEFT JOIN attendance a
     ON s.session_id = a.session_id AND  a.student_id = ?
 WHERE s.course_id = ?
 ORDER BY s.date ASC ");
-
-$stmt = $con->prepare('
-    SELECT s.session_id, s.course_id
-    FROM sessions s
-    JOIN course_student_list csl ON s.course_id = csl.course_id
-    WHERE s.session_code = ? AND csl.student_id = ?
-');
-
-if (!$stmt) {
-    die("SQL prepare failed: (" . $con->errno . ") " . $con->error);
-}
 
 $stmt-> bind_param('ii', $student_id, $course_id);
 $stmt->execute();

@@ -115,8 +115,8 @@ $courses = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>Faculty</h2>
-            <a href ='FacultyDash.php'>Dashboard</a>
+            <h2>Faculty Intern</h2>
+            <a href ='FIDash.php'>Dashboard</a>
            
 
         </div>

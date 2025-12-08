@@ -33,30 +33,34 @@ if (!$stmt) {
 
 $stmt->bind_param('ss', $email, $role); 
 $stmt->execute();
-$result = $stmt->get_result();
+$stmt->store_result();
 
 
-if ($result->num_rows === 1) {
-    $user = $result->fetch_assoc();
+if ($stmt->num_rows === 1) {
+    $stmt->bind_result($user_id, $first_name, $last_name, $email_db, $password_hash, $role_db);
+    $stmt->fetch();
 
-    if (password_verify($password, $user['password_hash'])) {
+    $user = [
+        'user_id'=> $user_id,
+        'first_name' => $first_name,
+        'last_name' => $last_name,
+        'email' => $email_db,
+        'role' => $role_db
+    ];
+
+    if (password_verify($password, $password_hash)) {
        
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['first_name'] = $user['first_name'];
-        $_SESSION['last_name'] = $user['last_name'];
-        $_SESSION['role'] = $user['role'];
+        $_SESSION['user_id'] = $user_id;
+        $_SESSION['email'] = $email_db;
+        $_SESSION['first_name'] = $first_name;
+        $_SESSION['last_name'] = $last_name;
+        $_SESSION['role'] = $role_db;
 
         $response = [
             'state' => true,
             'message' => 'Login successful',
-            'user' => [
-                'user_id' => $user['user_id'],
-                'first_name' => $user['first_name'],
-                'last_name' => $user['last_name'],
-                'email' => $user['email'],
-                'role' => $user['role'],
-            ]
+            'user' => $user,
+            
         ];
 
     } else {

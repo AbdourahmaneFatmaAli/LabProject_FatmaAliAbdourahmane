@@ -88,10 +88,7 @@ $attendance_result = $attendance_stmt->get_result();
     <div class="container">
         <div class="sidebar">
             <h2>Student</h2>
-            <a href ='StudentDash.html'>Dashboard</a>
-            <a href="StudentSessions.php">Sessions</a>
-            <a href="StudentReport.html">Reports</a>
-            <a href="login.html">Logout</a>
+            <a href ='StudentDash.php'>Dashboard</a>
             
 
         </div>

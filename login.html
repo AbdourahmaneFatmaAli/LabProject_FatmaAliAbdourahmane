@@ -93,11 +93,11 @@
                         swal('Login successful', 'redirecting to dashboard','success')
                            .then(() => {
                                 if (data.user.role === 'Student'){
-                                   window.location.href = 'StudentDash.html';
+                                   window.location.href = 'StudentDash.php';
                                } else if(data.user.role === 'Faculty'){
-                                  window.location.href = 'FacultyDash.html';
+                                  window.location.href = 'FacultyDash.php';
                                } else if(data.user.role === 'Faculty Intern'){
-                                  window.location.href = 'FIDash.html';
+                                  window.location.href = 'FIDash.php';
                                }
                             
                             });

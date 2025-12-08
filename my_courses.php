@@ -90,10 +90,8 @@ require 'db.php';
     <div class='container'>
         <div class= 'sidebar'>
             <h2>Student</h2>
-            <a href='StudentDash.html'>Dashboard</a>
-            <a href='StudentSession.html'>Session</a>
-            <a href='StudentReport.html'>Reports</a>
-            <a href='logout.html'>Logout</a>
+            <a href='StudentDash.php'>Dashboard</a>
+            
     </div>
 
     <div class='main-content'>

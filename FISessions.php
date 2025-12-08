@@ -55,15 +55,15 @@ $sessions = $stmt2->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faculty Sessions</title>
+    <title>Faculty Intern Sessions</title>
     <link rel="stylesheet" href="allSectionsstyle.css">
 </head>
 <body>
     <div class='container'>
         <div class='sidebar'>
-        <h2>Faculty</h2>
+        <h2>Faculty Intern</h2>
         
-            <a href ='FacultyDash.php'>Dashboard</a>
+            <a href ='FIDash.php'>Dashboard</a>
     </div>
         <div class="main-content">
             <h1>Session Overview</h1>
